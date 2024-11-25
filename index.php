@@ -1,30 +1,29 @@
 <?php
 // Database connection
 $servername = "localhost";
-$username = "root";  // replace with your database username
-$password = "";      // replace with your database password
-$dbname = "employee_db"; // replace with your database name
-
+$username = "root";  
+$password = "";     
+$dbname = "employee_db"; 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Pagination settings
-$records_per_page = 10; // Records per page
-$page = isset($_GET['page']) ? $_GET['page'] : 1; // Current page
+
+$records_per_page = 10; 
+$page = isset($_GET['page']) ? $_GET['page'] : 1;
 $start_from = ($page - 1) * $records_per_page;
 
 // Search functionality
-$search = isset($_POST['search']) ? $_POST['search'] : ''; // Search keyword
+$search = isset($_POST['search']) ? $_POST['search'] : ''; 
 $search_query = $search ? "WHERE name LIKE '%$search%' OR designation LIKE '%$search%'" : "";
 
-// Fetch employee data with pagination
+
 $sql = "SELECT * FROM employees $search_query LIMIT $start_from, $records_per_page";
 $result = $conn->query($sql);
 
-// Count total records for pagination
+
 $count_sql = "SELECT COUNT(*) FROM employees $search_query";
 $count_result = $conn->query($count_sql);
 $row = $count_result->fetch_row();
